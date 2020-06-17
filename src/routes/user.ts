@@ -20,7 +20,14 @@ router.get('/phones', checkJwt, async function (req: Request, res: Response) {
     const phones = await phoneRepository.find({where: {user: token.id}});
 
     res.json(phones);
-})
+});
+
+router.delete('/remove-phone/:id', checkJwt, async function (req: Request, res: Response) {
+   const phoneRepository = getRepository(Phone);
+   const results = await phoneRepository.delete(req.params.id);
+
+   res.send(results);
+});
 
 router.get("/:id", checkJwt, async function (req: Request, res: Response) {
     const userRepository = getRepository(User);

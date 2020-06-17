@@ -6,6 +6,7 @@ import * as bodyParser from 'body-parser';
 import {Phone} from './entities/Phone';
 import {User} from './entities/User';
 import routes from './routes';
+import cors from 'cors';
 
 createConnection({
     type: "postgres",
@@ -22,6 +23,7 @@ createConnection({
 
     // Call midlewares
     app.use(bodyParser.json());
+    app.use(cors());
 
     app.get('/', function (req: Request, res: Response) {
         res.send("Root route");

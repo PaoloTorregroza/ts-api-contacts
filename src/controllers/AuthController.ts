@@ -8,8 +8,8 @@ import config from "../config/config";
 class AuthController {
     static login = async (req: Request, res: Response) => {
         //Check if name and password are set
-        let {name, password} = req.body;
-        if (!(name && password)) {
+        let {email, password} = req.body;
+        if (!(email && password)) {
             res.status(400).send;
         }
 
@@ -17,7 +17,7 @@ class AuthController {
         const userRepository = getRepository(User);
         let user: User | undefined = undefined;
         try {
-            user = await  userRepository.findOneOrFail({ where: {name} });
+            user = await  userRepository.findOneOrFail({ where: {email} });
         } catch (e) {
             res.status(401).send();
         }
@@ -31,7 +31,7 @@ class AuthController {
         //Sing JWT, valid for 1 hour
         if (user != undefined) {
             const token = jwt.sign(
-                {id: user.id, name: user.name},
+                {id: user.id, email: user.email},
                 config.jwtSecret,
                 {expiresIn: "1h"}
             );
